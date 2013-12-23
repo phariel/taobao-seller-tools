@@ -1,0 +1,37 @@
+<% layout('layout') -%>
+<% script('/_scripts/pictrans.js') -%>
+<h3>图片搬家</h3>
+<div class="cont-frame pic-trans">
+  <div class="step1">
+    <div class="input-group">
+      <span class="input-group-addon">图片链接</span>
+      <input type="text" class="pic-link form-control" placeholder="在此输入" />
+    </div>
+    <div class="func-area">
+      <a href="/"><button class="btn btn-default">回到首页</button></a>
+      <button class="btn-read-pic btn btn-primary">获取图片</button>
+    </div>    
+  </div>
+  <div class="step2">    
+    <div>
+      <img class="pic-cont" alt="" />
+    </div>    
+    <div class="func-area">
+      <button class="btn-cancel btn btn-default">取消</button>
+      <button class="btn-save btn btn-primary">确定复制</button>
+    </div>    
+  </div>
+  <div class="step3">    
+    <div>
+      <img class="pic-cont-new" alt="" />
+    </div>
+    <div>
+      <label>图片新地址</label>
+      <div class="well pic-path-new"></div>
+    </div>
+    <div class="func-area">
+      <button class="btn-back btn btn-default">复制新的图片</button>
+    </div>
+  </div>
+</div>
+

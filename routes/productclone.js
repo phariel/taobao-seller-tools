@@ -1,6 +1,6 @@
 var request = require('request');
 
-var urls = require('../urls').urls;
+var urls = require('./urls').urls;
 var getApiUrl = urls.getApiUrl;
 var localBaseUrl = urls.localBaseUrl;
 
@@ -38,7 +38,6 @@ exports.read = function(req, res) {
   } else {
     var url = getApiUrl(token, {
       'method': 'taobao.item.get',
-      'format': 'json',
       'fields': 'title,nick',
       'num_iid': id
     });

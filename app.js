@@ -6,7 +6,8 @@ var express = require('express'),
   engine = require('ejs-locals'),
   routes = require('./routes'),
   productclone = require('./routes/productclone'),
-  auth = require('./routes/auth'),
+  auth = require('./routes/auth/auth'),
+  pictrans=require('./routes/pictrans'),
   http = require('http'),
   path = require('path');
 
@@ -37,8 +38,10 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/clone', productclone.index);
 app.get('/clone/read/:id', productclone.read);
-app.get('/clone/add/:id', productclone.add);
-app.get('/auth', auth.index);
+app.get('/clone/add', productclone.add);
+app.get('/auth', auth.auth);
+app.get('/pictrans', pictrans.index);
+app.get('/pictrans/save', pictrans.save);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

@@ -40,7 +40,7 @@ var getToken = function(code, req, res) {
   });
 };
 
-exports.index = function(req, res) {
+exports.auth = function(req, res) {
   var code = req.query.code;
   if (req.query.error) {
     res.render('simple', {

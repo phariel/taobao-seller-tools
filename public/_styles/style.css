@@ -22,13 +22,23 @@ body {
   padding: 9px;
   border-radius: 0;
 }
-.product-clone {
+.cont-frame {
   width: 600px;
 }
-.product-clone .step2 {
+.cont-frame .step2,
+.cont-frame .step3 {
   display: none;
 }
-.product-clone .func-area {
+.cont-frame .func-area {
   margin-top: 20px;
   text-align: right;
+}
+.gud .cont-frame .pic-cont {
+  max-width: 560px;
+  border: 5px solid #fd1c97;
+}
+.gud .cont-frame .btn-info {
+  border-color: #dedede;
+  background-color: #dedede;
+  color: #999;
 }
