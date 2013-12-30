@@ -1,6 +1,6 @@
 {
   "name": "tb-tools",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "node app.js"
@@ -9,7 +9,10 @@
     "express": "3.2.5",
     "ejs": "*",
     "less-middleware": "*",
-    "ejs-locals": "~1.0.2"
+    "ejs-locals": "~1.0.2",
+    "taobao": "~1.0.6",
+    "request": "~2.30.0",
+    "form-data": "~0.1.2"
   },
   "description": "tb-product-clone ================",
   "main": "app.js",

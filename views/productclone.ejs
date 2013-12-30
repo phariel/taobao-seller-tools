@@ -2,7 +2,7 @@
 <% script('/_scripts/productclone.js') -%>
 <h3>一键复制</h3>
 <div class="cont-frame product-clone">
-  <div class="step1">
+  <div class="step1 steps">
     <div class="input-group">
       <span class="input-group-addon">宝贝链接</span>
       <input type="text" class="product-link form-control" placeholder="在此输入"/>
@@ -12,14 +12,20 @@
       <button class="btn-read-product btn btn-primary">获取宝贝</button>
     </div>
   </div>
-  <div class="step2">
+  <div class="step2 steps">
     <label>宝贝标题</label>
     <div class="product-title well well-sm"></div>
     <label>卖家</label>
     <div class="product-seller well well-sm"></div>
     <div class="func-area">
       <button class="btn-cancel btn btn-default">取消</button>
-      <button class="btn btn-primary">确定复制</button>
+      <button class="btn-clone-product btn btn-primary">确定复制</button>
+    </div>
+  </div>
+  <div class="step3 steps">
+    <h4>复制成功，请去仓库中查看</h4>
+    <div class="func-area">
+      <button class="btn-cancel btn btn-default">返回</button>
     </div>
   </div>
 </div>

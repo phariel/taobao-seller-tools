@@ -3,7 +3,7 @@ exports.index = function(req, res) {
     'authorized': false
   };
 
-  if (req.session.token) {
+  if (req.cookies.token) {
     data.authorized = true;
   }
   res.render('index', data);

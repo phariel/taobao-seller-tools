@@ -33,8 +33,9 @@ body {
   margin-top: 20px;
   text-align: right;
 }
-.gud .cont-frame .pic-cont {
+.gud .cont-frame .pic-frame {
   max-width: 560px;
+  max-height: 320px;
   border: 5px solid #fd1c97;
 }
 .gud .cont-frame .btn-info {

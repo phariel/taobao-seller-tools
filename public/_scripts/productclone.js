@@ -6,13 +6,16 @@ function getParameterByName(name, str) {
 }
 
 $(function() {
+  var $steps = $('.steps');
   var $step1 = $('.step1');
   var $step2 = $('.step2');
+  var $step3 = $('.step3');
   var $link = $('.product-link');
   var $title = $('.product-title');
   var $seller = $('.product-seller');
 
   var $readBtn = $('.btn-read-product');
+  var $cloneBtn = $('.btn-clone-product');
   var $cancelBtn = $('.btn-cancel');
 
   $readBtn.click(function() {
@@ -34,7 +37,7 @@ $(function() {
             $link.data('item', item);
             $title.text(item.title);
             $seller.text(item.nick);
-            $step1.hide();
+            $steps.hide();
             $step2.show();
           }
 
@@ -45,9 +48,30 @@ $(function() {
     }
   });
 
+  $cloneBtn.click(function() {
+    var $this = $(this);
+    $this.addClass('btn-info');
+    $.ajax({
+      type: 'GET',
+      url: '/clone/add'
+    })
+      .done(function(data) {
+        if (data.err && data.err.length > 0) {
+          alert('错误： ' + data.err);
+        }
+        if (data.item_add_response) {
+          $steps.hide();
+          $step3.show();
+        }
+      })
+      .always(function() {
+        $this.removeClass('btn-info');
+      });
+  });
+
   $cancelBtn.click(function() {
+    $steps.hide();
     $step1.show();
-    $step2.hide();
   });
 
   $link.focus(function() {

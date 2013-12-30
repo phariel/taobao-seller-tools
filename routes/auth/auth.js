@@ -2,8 +2,8 @@ var request = require('request');
 var querystring = require('querystring');
 
 var keydata = require('./key').keydata;
-var appkey = keydata.appkey;
-var appsecret = keydata.appsecret;
+var appkey = keydata.app_key;
+var appsecret = keydata.app_secret;
 
 var urls = require('../urls').urls;
 var authUrl = urls.authUrl;
@@ -33,8 +33,10 @@ var getToken = function(code, req, res) {
     }
     if (!error && response.statusCode == 200) {
       body = JSON.parse(body);
-      req.session.token = body.access_token;
-      console.log('token:' + req.session.token);
+      res.cookie('token', body.access_token, {
+        maxAge: 1000 * 60 * 60 * 12
+      });
+      console.log('token:' + body.access_token);
       res.redirect(localBaseUrl);
     }
   });
@@ -49,7 +51,7 @@ exports.auth = function(req, res) {
   }
 
   if (!code) {
-    var str = authUrl + '?response_type=code&client_id=' + keydata.appkey + '&redirect_uri=' + localUrl;
+    var str = authUrl + '?response_type=code&client_id=' + appkey + '&redirect_uri=' + localUrl;
     res.redirect(str);
   } else {
     console.log('code:' + code);
