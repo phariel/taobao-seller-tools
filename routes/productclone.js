@@ -1,5 +1,8 @@
 var request = require('request');
 var taobao = require('./taobao-config').taobao();
+var jsdom = require('jsdom');
+var async = require('async');
+var upload = require('./pictrans/upload').upload;
 
 var urls = require('./urls').urls;
 var getApiUrl = urls.getApiUrl;
@@ -72,43 +75,81 @@ exports.add = function(req, res) {
     item = JSON.parse(item);
     item = item.item_get_response.item;
 
-    request.post({
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      uri: postApiUrl.url,
-      form: {
-        access_token: token,
-        v: postApiUrl.v,
-        format: postApiUrl.format,
-        method: 'taobao.item.add',
-        num: item.num,
-        price: item.price,
-        type: item.type,
-        stuff_status: item.stuff_status,
-        title: item.title,
-        desc: item.desc,
-        'location.state': item.location.state,
-        'location.city': item.location.city,
-        approve_status: 'instock',
-        cid: item.cid,
-        props: item.props,
-        property_alias: item.property_alias,
-        input_pids: item.input_pids,
-        input_str: item.input_str
-      }
-    }, function(error, response, body) {
-      if (error) {
-        data.err = 'post error: ' + error;
-        console.log(data.err);
-        res.end(JSON.stringify(data));
-      }
-      if (!error && response.statusCode == 200) {
-        //body = JSON.parse(body);
-        console.log(body);
-        res.end(body);
+    jsdom.env({
+      html: item.desc,
+      scripts: [
+        localBaseUrl + '/_scripts/jquery.min.js'
+      ],
+      done: function(err, window) {
+        var $ = window.$;
+        var picArr = [];
+        $('img').each(function() {
+          var $this = $(this);
+          picArr.push($this.attr('src'));
+        });
+        console.log('picArr: ' + picArr);
+
+        var picIndex = 0;
+        async.whilst(function() {
+          return picIndex < picArr.length;
+        }, function(next) {
+          var oldPath = picArr[picIndex];
+          upload(picArr[picIndex], token, function(pic) {
+            var newPath = '';
+            if (pic.err) {
+              newPath = pic.err;
+            } else {
+              newPath = pic.picture_path;
+            }
+            item.desc = item.desc.replace(oldPath, newPath);
+
+            picIndex++;
+            next();
+          });
+        }, function(err) {
+          if (err) {
+            console.log('savelist error: ' + err);
+            return;
+          }
+          request.post({
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            uri: postApiUrl.url,
+            form: {
+              access_token: token,
+              v: postApiUrl.v,
+              format: postApiUrl.format,
+              method: 'taobao.item.add',
+              num: item.num,
+              price: item.price,
+              type: item.type,
+              stuff_status: item.stuff_status,
+              title: item.title,
+              desc: item.desc,
+              'location.state': item.location.state,
+              'location.city': item.location.city,
+              approve_status: 'instock',
+              cid: item.cid,
+              props: item.props,
+              property_alias: item.property_alias,
+              input_pids: item.input_pids,
+              input_str: item.input_str
+            }
+          }, function(error, response, body) {
+            if (error) {
+              data.err = 'post error: ' + error;
+              console.log(data.err);
+              res.end(JSON.stringify(data));
+            }
+            if (!error && response.statusCode == 200) {
+              //body = JSON.parse(body);
+              console.log(body);
+              res.end(body);
+            }
+          });
+        });
       }
     });
-
   }
 };

@@ -46,13 +46,11 @@ $(function() {
         if (data.err && data.err.length > 0) {
           alert('错误： ' + data.err);
         }
-        if (data.picture_upload_response) {
-          var path = data.picture_upload_response.picture.picture_path;
-          $picContNew.attr('src', path);
-          $picPathNew.text(path);
-          $steps.hide();
-          $step3.show();
-        }
+        var path = data.picture_path;
+        $picContNew.attr('src', path);
+        $picPathNew.text(path);
+        $steps.hide();
+        $step3.show();
       })
       .always(function() {
         $this.removeClass(btnSaving);

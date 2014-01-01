@@ -7,7 +7,7 @@ var express = require('express'),
   routes = require('./routes'),
   productclone = require('./routes/productclone'),
   auth = require('./routes/auth/auth'),
-  pictrans=require('./routes/pictrans'),
+  pictrans = require('./routes/pictrans/pictrans'),
   http = require('http'),
   path = require('path');
 
