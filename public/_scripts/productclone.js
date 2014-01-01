@@ -10,6 +10,7 @@ $(function() {
   var $step1 = $('.step1');
   var $step2 = $('.step2');
   var $step3 = $('.step3');
+  var $step4 = $('.step4');
   var $link = $('.product-link');
   var $title = $('.product-title');
   var $seller = $('.product-seller');
@@ -17,6 +18,7 @@ $(function() {
   var $readBtn = $('.btn-read-product');
   var $cloneBtn = $('.btn-clone-product');
   var $cancelBtn = $('.btn-cancel');
+  var $bindPicBtn = $('.btn-bindpic');
 
   $readBtn.click(function() {
     var $this = $(this);
@@ -62,6 +64,27 @@ $(function() {
         if (data.item_add_response) {
           $steps.hide();
           $step3.show();
+        }
+      })
+      .always(function() {
+        $this.removeClass('btn-info');
+      });
+  });
+
+  $bindPicBtn.click(function(){
+    var $this = $(this);
+    $this.addClass('btn-info');
+    $.ajax({
+      type: 'GET',
+      url: '/clone/bindpic'
+    })
+      .done(function(data) {
+        if (data.err && data.err.length > 0) {
+          alert('错误： ' + data.err);
+        }
+        if (data.item_img) {
+          $steps.hide();
+          $step4.show();
         }
       })
       .always(function() {

@@ -26,7 +26,8 @@ body {
   width: 600px;
 }
 .cont-frame .step2,
-.cont-frame .step3 {
+.cont-frame .step3,
+.cont-frame .step4 {
   display: none;
 }
 .cont-frame .func-area {

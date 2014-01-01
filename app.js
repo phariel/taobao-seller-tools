@@ -39,6 +39,7 @@ app.get('/', routes.index);
 app.get('/clone', productclone.index);
 app.get('/clone/read/:id', productclone.read);
 app.get('/clone/add', productclone.add);
+app.get('/clone/bindpic', productclone.bindpic);
 app.get('/auth', auth.auth);
 app.get('/pictrans', pictrans.index);
 app.get('/pictrans/save', pictrans.save);

@@ -39,7 +39,7 @@ exports.read = function(req, res) {
   } else {
     taobao.core.call({
       'method': 'taobao.item.get',
-      'fields': 'nick,num,price,type,stuff_status,title,desc,location,cid,props,property_alias,input_pids,input_str',
+      'fields': 'nick,num,price,type,stuff_status,title,desc,location,cid,props,property_alias,input_pids,input_str,item_img,prop_img',
       'num_iid': id
     }, function(body) {
       var bodyObj = JSON.parse(body);
@@ -74,6 +74,16 @@ exports.add = function(req, res) {
   } else {
     item = JSON.parse(item);
     item = item.item_get_response.item;
+    if (item.item_imgs) {
+      req.session.item_img = item.item_imgs.item_img;
+    } else {
+      req.session.item_img = false;
+    }
+    if (item.prop_imgs) {
+      req.session.prop_img = item.prop_imgs.prop_img;
+    } else {
+      req.session.prop_img = false;
+    }
 
     jsdom.env({
       html: item.desc,
@@ -94,7 +104,7 @@ exports.add = function(req, res) {
           return picIndex < picArr.length;
         }, function(next) {
           var oldPath = picArr[picIndex];
-          upload(picArr[picIndex], token, function(pic) {
+          upload(oldPath, token, function(pic) {
             var newPath = '';
             if (pic.err) {
               newPath = pic.err;
@@ -108,7 +118,9 @@ exports.add = function(req, res) {
           });
         }, function(err) {
           if (err) {
-            console.log('savelist error: ' + err);
+            data.err = 'savelist error: ' + err;
+            console.log(data.err);
+            res.end(JSON.stringify(data));
             return;
           }
           request.post({
@@ -144,6 +156,8 @@ exports.add = function(req, res) {
             }
             if (!error && response.statusCode == 200) {
               //body = JSON.parse(body);
+              var bodyObj = JSON.parse(body);
+              req.session.newiid = bodyObj.item_add_response.item.num_iid;
               console.log(body);
               res.end(body);
             }
@@ -151,5 +165,63 @@ exports.add = function(req, res) {
         });
       }
     });
+  }
+};
+
+exports.bindpic = function(req, res) {
+  res.writeHead(200, {
+    "Content-Type": "application/json"
+  });
+  var data = {
+    err: ''
+  };
+  var token = getToken(req, res);
+  var newiid = req.session.newiid;
+  if (!token) {
+    data.err = 'Need token';
+    console.log('token error');
+    res.end(JSON.stringify(data));
+  } else if (!newiid) {
+    data.err = 'Need newiid';
+    console.log('newiid error');
+    res.end(JSON.stringify(data));
+  } else {
+    var item_img = req.session.item_img;
+    if (item_img) {
+      var picIndex = 0;
+      async.whilst(function() {
+        return picIndex < item_img.length;
+      }, function(next) {
+        var img = item_img[picIndex];
+        upload(img.url, token, function(newImg) {
+          if (!newImg.err) {
+            taobao.core.call({
+              'session': token,
+              'method': 'taobao.item.joint.img',
+              'num_iid': newiid,
+              'pic_path': newImg.picture_path.split('imgextra/')[1],
+              'position': img.position,
+              'is_major': (img.id == 0) ? true : false
+            }, function(body) {
+              console.log(newImg.picture_path + ' bind: ' + JSON.stringify(body));
+
+              picIndex++;
+              next();
+            });
+          }
+        });
+      }, function(err) {
+        if (err) {
+          data.err = err;
+          console.log('bindlist error: ' + err);
+        } else {
+          data = {
+            item_img: true
+          };
+        }
+
+        res.end(JSON.stringify(data));
+      });
+    }
   }
 };

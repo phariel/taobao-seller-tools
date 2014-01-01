@@ -42,7 +42,6 @@ $(function() {
       url: '/pictrans/save?url=' + url
     })
       .done(function(data) {
-        data = $.parseJSON(data);
         if (data.err && data.err.length > 0) {
           alert('错误： ' + data.err);
         }

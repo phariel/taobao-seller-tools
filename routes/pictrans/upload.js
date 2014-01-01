@@ -1,6 +1,5 @@
 var request = require('request');
 var FormData = require('form-data');
-var EventProxy = require('eventproxy');
 var urls = require('../urls').urls;
 var postApiUrl = urls.postApiUrl;
 

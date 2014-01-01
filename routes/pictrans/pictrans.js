@@ -21,6 +21,9 @@ exports.index = function(req, res) {
 };
 
 exports.save = function(req, res) {
+  res.writeHead(200, {
+    "Content-Type": "application/json"
+  });
   var data = {
     err: ''
   };
