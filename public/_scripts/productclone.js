@@ -20,6 +20,9 @@ $(function() {
   var $cancelBtn = $('.btn-cancel');
   var $bindPicBtn = $('.btn-bindpic');
 
+  var $itemImgNew = $('.item-img-new');
+  var $propItemNew = $('.prop-img-new');
+
   $readBtn.click(function() {
     var $this = $(this);
     var url = $link.val();
@@ -71,7 +74,7 @@ $(function() {
       });
   });
 
-  $bindPicBtn.click(function(){
+  $bindPicBtn.click(function() {
     var $this = $(this);
     $this.addClass('btn-info');
     $.ajax({
@@ -81,11 +84,14 @@ $(function() {
       .done(function(data) {
         if (data.err && data.err.length > 0) {
           alert('错误： ' + data.err);
+          return;
         }
-        if (data.item_img) {
-          $steps.hide();
-          $step4.show();
-        }
+        $steps.hide();
+        $step4.show();
+        var successText = '绑定成功！';
+        var failText = '图片没有或其中一些绑定失败';
+        $itemImgNew.text((data.item_img) ? successText : failText);
+        $propItemNew.text((data.prop_img) ? successText : failText);
       })
       .always(function() {
         $this.removeClass('btn-info');

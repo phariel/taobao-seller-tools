@@ -14,7 +14,8 @@
     "request": "~2.30.0",
     "form-data": "~0.1.2",
     "jsdom": "~0.8.10",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "eventproxy": "~0.2.6"
   },
   "description": "tb-product-clone ================",
   "main": "app.js",

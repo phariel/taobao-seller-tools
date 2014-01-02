@@ -3,6 +3,7 @@ var taobao = require('./taobao-config').taobao();
 var jsdom = require('jsdom');
 var async = require('async');
 var upload = require('./pictrans/upload').upload;
+var EventProxy = require('eventproxy');
 
 var urls = require('./urls').urls;
 var getApiUrl = urls.getApiUrl;
@@ -47,6 +48,8 @@ exports.read = function(req, res) {
         data.err = bodyObj.error_response.msg;
         res.end(JSON.stringify(data));
       } else {
+        var item = bodyObj.item_get_response.item;
+        console.log(JSON.stringify(item));
         req.session.clonefrom = body;
         res.end(body);
       }
@@ -155,6 +158,7 @@ exports.add = function(req, res) {
               res.end(JSON.stringify(data));
             }
             if (!error && response.statusCode == 200) {
+              console.log('add product: ' + body);
               //body = JSON.parse(body);
               var bodyObj = JSON.parse(body);
               req.session.newiid = bodyObj.item_add_response.item.num_iid;
@@ -186,7 +190,18 @@ exports.bindpic = function(req, res) {
     console.log('newiid error');
     res.end(JSON.stringify(data));
   } else {
+    var ep = EventProxy();
+    ep.all('item_img_new', 'prop_img_new', function(item, prop) {
+      var returnVal = {
+        item_img: item,
+        prop_img: prop
+      };
+      res.end(JSON.stringify(returnVal));
+    });
+
     var item_img = req.session.item_img;
+    var prop_img = req.session.prop_img;
+
     if (item_img) {
       var picIndex = 0;
       async.whilst(function() {
@@ -203,7 +218,7 @@ exports.bindpic = function(req, res) {
               'position': img.position,
               'is_major': (img.id == 0) ? true : false
             }, function(body) {
-              console.log(newImg.picture_path + ' bind: ' + JSON.stringify(body));
+              console.log(newImg.picture_path + ' this item img bind return: ' + JSON.stringify(body));
 
               picIndex++;
               next();
@@ -211,17 +226,41 @@ exports.bindpic = function(req, res) {
           }
         });
       }, function(err) {
-        if (err) {
-          data.err = err;
-          console.log('bindlist error: ' + err);
-        } else {
-          data = {
-            item_img: true
-          };
-        }
-
-        res.end(JSON.stringify(data));
+        ep.emit('item_img_new', !err);
       });
+    } else {
+      ep.emit('item_img_new', false);
+    }
+
+    if (prop_img) {
+      var picIndex = 0;
+      async.whilst(function() {
+        return picIndex < prop_img.length;
+      }, function(next) {
+        var img = prop_img[picIndex];
+        upload(img.url, token, function(newImg) {
+          if (!newImg.err) {
+            taobao.core.call({
+              'session': token,
+              'method': 'taobao.item.joint.propimg',
+              'num_iid': newiid,
+              'properties': img.properties,
+              'pic_path': newImg.picture_path.split('imgextra/')[1],
+              'position': img.position,
+              'is_major': (img.id == 0) ? true : false
+            }, function(body) {
+              console.log(newImg.picture_path + ' this prop img bind return: ' + JSON.stringify(body));
+
+              picIndex++;
+              next();
+            });
+          }
+        });
+      }, function(err) {
+        ep.emit('prop_img_new', !err);
+      });
+    } else {
+      ep.emit('prop_img_new', false);
     }
   }
 };
