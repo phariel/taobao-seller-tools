@@ -88,6 +88,8 @@ exports.add = function(req, res) {
       req.session.prop_img = false;
     }
 
+    item.desc = item.desc.replace(/<a.*?>(.*)<\/a>/ig, '');
+
     jsdom.env({
       html: item.desc,
       scripts: [
