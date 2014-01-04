@@ -1,0 +1,46 @@
+html {
+  background: #ccc;
+}
+body {
+  background: #efefef;
+  width: 720px;
+  margin: 0 auto;
+  padding: 40px;
+  min-height: 550px;
+}
+.well {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.well.well-sm {
+  padding: 9px;
+  border-radius: 0;
+}
+.cont-frame {
+  width: 600px;
+}
+.cont-frame .step2,
+.cont-frame .step3,
+.cont-frame .step4 {
+  display: none;
+}
+.cont-frame .func-area {
+  margin-top: 20px;
+  text-align: right;
+}
+.gud .cont-frame .pic-frame {
+  max-width: 560px;
+  max-height: 320px;
+  border: 5px solid #fd1c97;
+}
+.gud .cont-frame .btn-info {
+  border-color: #dedede;
+  background-color: #dedede;
+  color: #999;
+}

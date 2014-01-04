@@ -1,0 +1,11 @@
+<% layout('layout') -%>
+<%if(authorized){ %>
+<h3>请选择</h3>
+<div>
+  <a href="/clone" class="btn btn-default">一键复制</a>
+  <a href="/pictrans" class="btn btn-default">图片搬家</a>
+</div>
+<%}else{%>
+<h3>取得验证</h3>
+<a href="/auth"><button class="btn btn-primary start-auth">开始验证</button></a>
+<%}%>

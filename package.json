@@ -1,0 +1,32 @@
+{
+  "name": "tb-tools",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.5",
+    "ejs": "*",
+    "less-middleware": "*",
+    "ejs-locals": "~1.0.2",
+    "taobao": "~1.0.6",
+    "request": "~2.30.0",
+    "form-data": "~0.1.2",
+    "jsdom": "~0.8.10",
+    "async": "~0.2.9",
+    "eventproxy": "~0.2.6"
+  },
+  "description": "tb-product-clone ================",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phariel/tb-product-clone.git"
+  },
+  "author": "Phil Peng",
+  "license": "GNU GENERAL PUBLIC LICENSE V2",
+  "bugs": {
+    "url": "https://github.com/phariel/tb-product-clone/issues"
+  }
+}

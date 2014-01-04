@@ -1,0 +1,40 @@
+<% layout('layout') -%>
+<% script('/_scripts/productclone.js') -%>
+<h3>一键复制</h3>
+<div class="cont-frame product-clone">
+  <div class="step1 steps">
+    <div class="input-group">
+      <span class="input-group-addon">宝贝链接</span>
+      <input type="text" class="product-link form-control" placeholder="在此输入" />
+    </div>
+    <div class="func-area">
+      <a href="/"><button class="btn btn-default">回到首页</button></a>
+      <button class="btn-read-product btn btn-primary">获取宝贝</button>
+    </div>
+  </div>
+  <div class="step2 steps">
+    <label>宝贝标题</label>
+    <div class="product-title well well-sm"></div>
+    <label>卖家</label>
+    <div class="product-seller well well-sm"></div>
+    <div class="func-area">
+      <button class="btn-cancel btn btn-default">取消</button>
+      <button class="btn-clone-product btn btn-primary">确定复制</button>
+    </div>
+  </div>
+  <div class="step3 steps">
+    <h4>复制成功，已存在于仓库，最后一步，绑定主副图和属性图</h4>
+    <div class="func-area">
+      <button class="btn-bindpic btn btn-primary">开始</button>
+    </div>
+  </div>
+  <div class="step4 steps">
+    <h4>主副图：<span class="item-img-new"></span></h4>
+    <h4>属性图：<span class="prop-img-new"></span></h4>
+    <h4>全部搞定，去仓库按照创建时间排序查找。</h4>
+    <div class="func-area">
+      <button class="btn-cancel btn btn-primary">返回</button>
+    </div>
+  </div>
+</div>
+
