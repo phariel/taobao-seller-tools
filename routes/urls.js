@@ -1,7 +1,9 @@
+var keyfile = require('./auth/key');
+
 exports.urls = {
   authUrl: 'https://oauth.taobao.com/authorize',
   tokenUrl: 'https://oauth.taobao.com/token',
-  localBaseUrl: 'http://tbproductclone.com:18431',
+  localBaseUrl: keyfile.localBaseUrl,
   apiUrl: 'https://eco.taobao.com/router/rest',
   getApiUrl: function(token, options) {
     var apiUrl = 'https://eco.taobao.com/router/rest';
