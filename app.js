@@ -7,6 +7,7 @@ var express = require('express'),
   routes = require('./routes'),
   productclone = require('./routes/productclone'),
   auth = require('./routes/auth/auth'),
+  keyfile = require('./routes/auth/key'),
   pictrans = require('./routes/pictrans/pictrans'),
   http = require('http'),
   path = require('path');
@@ -14,7 +15,7 @@ var express = require('express'),
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 18431);
+app.set('port', process.env.PORT || keyfile.port);
 app.engine('ejs', engine);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
