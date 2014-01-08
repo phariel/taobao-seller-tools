@@ -101,6 +101,7 @@ $(function() {
   $cancelBtn.click(function() {
     $steps.hide();
     $step1.show();
+    $link.val('');
   });
 
   $link.focus(function() {
